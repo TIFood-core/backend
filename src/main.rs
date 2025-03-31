@@ -2,10 +2,14 @@ use app::create_app;
 use tokio::net::TcpListener;
 
 mod app;
+mod config;
 
 #[tokio::main]
 async fn main() {
-    let port = 3000;
+    #[cfg(debug_assertions)]
+    dotenvy::dotenv().ok();
+
+    let port = config::app::get_app_config().port;
 
     let listener = TcpListener::bind(format!("0.0.0.0:{}", port))
         .await
