@@ -1,0 +1,60 @@
+use sea_orm_migration::prelude::*;
+use uuid::Uuid;
+
+use crate::m20250401_191153_create_user_table::User;
+
+#[derive(DeriveMigrationName)]
+pub struct Migration;
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(Sale::Table)
+                    .if_not_exists()
+                    .col(
+                        ColumnDef::new(Sale::Uuid)
+                            .uuid()
+                            .primary_key()
+                            .default(Uuid::new_v4()),
+                    )
+                    .col(ColumnDef::new(Sale::IdMercadoPago).unsigned())
+                    .col(ColumnDef::new(Sale::TotalPrice).decimal().not_null())
+                    .col(
+                        ColumnDef::new(Sale::WasCollected)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(ColumnDef::new(Sale::DeliveredBy).uuid())
+                    .foreign_key(
+                        ForeignKey::create()
+                            .name("fk-sale-user-id")
+                            .from(Sale::Table, Sale::DeliveredBy)
+                            .to(User::Table, User::Id),
+                    )
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(Table::drop().table(Sale::Table).to_owned())
+            .await
+    }
+}
+
+#[derive(DeriveIden)]
+pub enum Sale {
+    Table,
+    Uuid,
+    IdMercadoPago,
+    TotalPrice,
+    WasCollected,
+    DeliveredBy,
+    WasRefunded,
+    RequiredRefunded,
+}
