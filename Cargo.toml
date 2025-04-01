@@ -3,6 +3,11 @@ name = "tifood"
 version = "0.1.0"
 edition = "2024"
 
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+
 [dependencies]
 axum = "0.8.3"
 tokio = { version = "1.44.1", features = ["sync", "macros", "rt-multi-thread"] }
