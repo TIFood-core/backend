@@ -5,6 +5,7 @@ mod m20250401_193019_create_product_table;
 mod m20250401_195229_create_campaign_table;
 mod m20250401_195729_create_product_campaign_table;
 mod m20250401_202011_create_sale_table;
+mod m20250401_225437_create_product_campaign_sale_table;
 
 pub struct Migrator;
 
@@ -17,6 +18,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250401_195229_create_campaign_table::Migration),
             Box::new(m20250401_195729_create_product_campaign_table::Migration),
             Box::new(m20250401_202011_create_sale_table::Migration),
+            Box::new(m20250401_225437_create_product_campaign_sale_table::Migration),
         ]
     }
 }

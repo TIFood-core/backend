@@ -1,5 +1,4 @@
 use sea_orm_migration::prelude::*;
-use uuid::Uuid;
 
 use crate::{
     m20250401_193019_create_product_table::Product,
@@ -17,12 +16,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(ProductCampaign::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(ProductCampaign::Uuid)
-                            .uuid()
-                            .primary_key()
-                            .default(Uuid::new_v4()),
-                    )
+                    .col(ColumnDef::new(ProductCampaign::Uuid).uuid().primary_key())
                     .col(ColumnDef::new(ProductCampaign::Price).decimal().not_null())
                     .col(ColumnDef::new(ProductCampaign::Units).unsigned().not_null())
                     .col(
@@ -48,6 +42,12 @@ impl MigrationTrait for Migration {
                             .from(ProductCampaign::Table, ProductCampaign::IdCampaign)
                             .to(Campaign::Table, Campaign::Uuid),
                     )
+                    .col(
+                        ColumnDef::new(ProductCampaign::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null()
+                            .default(Expr::current_timestamp()),
+                    )
                     .to_owned(),
             )
             .await
@@ -61,7 +61,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum ProductCampaign {
+pub enum ProductCampaign {
     Table,
     Uuid,
     Price,
@@ -69,4 +69,5 @@ enum ProductCampaign {
     ExtraUnits,
     IdProduct,
     IdCampaign,
+    CreatedAt,
 }

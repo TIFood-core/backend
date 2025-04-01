@@ -1,5 +1,4 @@
 use sea_orm_migration::prelude::*;
-use uuid::Uuid;
 
 use crate::m20250401_191153_create_user_table::User;
 
@@ -14,12 +13,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Product::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Product::Uuid)
-                            .uuid()
-                            .primary_key()
-                            .default(Uuid::new_v4()),
-                    )
+                    .col(ColumnDef::new(Product::Uuid).uuid().primary_key())
                     .col(ColumnDef::new(Product::Name).string().not_null())
                     .col(ColumnDef::new(Product::Image).string())
                     .col(ColumnDef::new(Product::Description).text().not_null())

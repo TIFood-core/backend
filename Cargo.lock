@@ -744,6 +744,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "entity"
+version = "0.1.0"
+dependencies = [
+ "sea-orm",
+ "uuid",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1484,7 +1492,6 @@ version = "0.1.0"
 dependencies = [
  "async-std",
  "sea-orm-migration",
- "uuid",
 ]
 
 [[package]]
@@ -2775,6 +2782,8 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "dotenvy",
+ "entity",
+ "migration",
  "sea-orm",
  "tokio",
  "tower-http",
@@ -3054,7 +3063,6 @@ version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "458f7a779bf54acc9f347480ac654f68407d3aab21269a6e3c9f922acd9e2da9"
 dependencies = [
- "getrandom 0.3.2",
  "serde",
 ]
 

@@ -1,5 +1,4 @@
 use sea_orm_migration::prelude::*;
-use uuid::Uuid;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -12,12 +11,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Campaign::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Campaign::Uuid)
-                            .uuid()
-                            .primary_key()
-                            .default(Uuid::new_v4()),
-                    )
+                    .col(ColumnDef::new(Campaign::Uuid).uuid().primary_key())
                     .col(ColumnDef::new(Campaign::Date).date().not_null())
                     .col(
                         ColumnDef::new(Campaign::CreatedAt)

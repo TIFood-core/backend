@@ -1,5 +1,4 @@
 use sea_orm_migration::prelude::*;
-use uuid::Uuid;
 
 use crate::m20250401_191153_create_user_table::User;
 
@@ -14,12 +13,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Sale::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Sale::Uuid)
-                            .uuid()
-                            .primary_key()
-                            .default(Uuid::new_v4()),
-                    )
+                    .col(ColumnDef::new(Sale::Uuid).uuid().primary_key())
                     .col(ColumnDef::new(Sale::IdMercadoPago).unsigned())
                     .col(ColumnDef::new(Sale::TotalPrice).decimal().not_null())
                     .col(
@@ -28,12 +22,36 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .default(false),
                     )
-                    .col(ColumnDef::new(Sale::DeliveredBy).uuid())
+                    .col(ColumnDef::new(Sale::DeliveredBy).unsigned().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-sale-user-id")
                             .from(Sale::Table, Sale::DeliveredBy)
                             .to(User::Table, User::Id),
+                    )
+                    .col(
+                        ColumnDef::new(Sale::MoneyKept)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(
+                        ColumnDef::new(Sale::RequiredRefunded)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(
+                        ColumnDef::new(Sale::WasRefunded)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(
+                        ColumnDef::new(Sale::CreatedAt)
+                            .date()
+                            .not_null()
+                            .default(Expr::current_date()),
                     )
                     .to_owned(),
             )
@@ -55,6 +73,8 @@ pub enum Sale {
     TotalPrice,
     WasCollected,
     DeliveredBy,
-    WasRefunded,
+    MoneyKept,
     RequiredRefunded,
+    WasRefunded,
+    CreatedAt,
 }
