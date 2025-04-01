@@ -3,6 +3,7 @@ use tokio::net::TcpListener;
 
 mod app;
 mod config;
+mod middleware;
 
 #[tokio::main]
 async fn main() {
