@@ -25,14 +25,14 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .default(false),
                     )
-                    .col(ColumnDef::new(User::Activation).uuid().unique_key())
+                    .col(ColumnDef::new(User::EmailActivation).uuid().unique_key())
                     .col(
-                        ColumnDef::new(User::ActivatorGenerationDate)
+                        ColumnDef::new(User::EmailActivatorGenerationDate)
                             .date()
                             .default(Expr::current_date()),
                     )
                     .col(
-                        ColumnDef::new(User::IsBanned)
+                        ColumnDef::new(User::IsActived)
                             .boolean()
                             .not_null()
                             .default(false),
@@ -62,8 +62,8 @@ pub enum User {
     Email,
     Password,
     IsAdmin,
-    Activation,
-    ActivatorGenerationDate,
-    IsBanned,
+    EmailActivation,
+    EmailActivatorGenerationDate,
+    IsActived,
     CreatedAt,
 }
