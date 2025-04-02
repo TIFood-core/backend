@@ -32,7 +32,7 @@ impl MigrationTrait for Migration {
                             .default(Expr::current_date()),
                     )
                     .col(
-                        ColumnDef::new(User::IsActived)
+                        ColumnDef::new(User::IsActive)
                             .boolean()
                             .not_null()
                             .default(false),
@@ -64,6 +64,6 @@ pub enum User {
     IsAdmin,
     EmailActivation,
     EmailActivatorGenerationDate,
-    IsActived,
+    IsActive,
     CreatedAt,
 }
