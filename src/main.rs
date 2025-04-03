@@ -4,7 +4,9 @@ use tokio::net::TcpListener;
 mod app;
 mod configs;
 mod connections;
+mod handlers;
 mod middlewares;
+mod routes;
 mod state;
 
 #[tokio::main]
