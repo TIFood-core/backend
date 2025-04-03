@@ -3,6 +3,7 @@
 pub mod prelude;
 
 pub mod campaign;
+pub mod class;
 pub mod product;
 pub mod product_campaign;
 pub mod product_campaign_sale;

@@ -11,8 +11,10 @@ pub struct Model {
     pub id_mercado_pago: Option<u32>,
     #[sea_orm(column_type = "Decimal(Some((10, 0)))")]
     pub total_price: Decimal,
-    pub was_collected: bool,
-    pub delivered_by: u32,
+    pub username: String,
+    #[sea_orm(column_type = "Binary(16)")]
+    pub id_user_class: Uuid,
+    pub id_deliveryman: Option<u32>,
     pub money_kept: bool,
     pub required_refunded: bool,
     pub was_refunded: bool,
@@ -21,16 +23,30 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::class::Entity",
+        from = "Column::IdUserClass",
+        to = "super::class::Column::Uuid",
+        on_update = "Restrict",
+        on_delete = "Restrict"
+    )]
+    Class,
     #[sea_orm(has_many = "super::product_campaign_sale::Entity")]
     ProductCampaignSale,
     #[sea_orm(
         belongs_to = "super::user::Entity",
-        from = "Column::DeliveredBy",
+        from = "Column::IdDeliveryman",
         to = "super::user::Column::Id",
         on_update = "Restrict",
         on_delete = "Restrict"
     )]
     User,
+}
+
+impl Related<super::class::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Class.def()
+    }
 }
 
 impl Related<super::product_campaign_sale::Entity> for Entity {

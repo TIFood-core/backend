@@ -1,6 +1,6 @@
 use sea_orm_migration::prelude::*;
 
-use crate::m20250401_191153_create_user_table::User;
+use crate::{m20250401_191153_create_user_table::User, m20250403_191648_create_class_table::Class};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -16,17 +16,19 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Sale::Uuid).uuid().primary_key())
                     .col(ColumnDef::new(Sale::IdMercadoPago).unsigned())
                     .col(ColumnDef::new(Sale::TotalPrice).decimal().not_null())
-                    .col(
-                        ColumnDef::new(Sale::WasCollected)
-                            .boolean()
-                            .not_null()
-                            .default(false),
+                    .col(ColumnDef::new(Sale::Username).string().not_null())
+                    .col(ColumnDef::new(Sale::IdUserClass).uuid().not_null())
+                    .foreign_key(
+                        ForeignKey::create()
+                            .name("fk-sale-class-uuid")
+                            .from(Sale::Table, Sale::IdUserClass)
+                            .to(Class::Table, Class::Uuid),
                     )
-                    .col(ColumnDef::new(Sale::DeliveredBy).unsigned().not_null())
+                    .col(ColumnDef::new(Sale::IdDeliveryman).unsigned())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-sale-user-id")
-                            .from(Sale::Table, Sale::DeliveredBy)
+                            .from(Sale::Table, Sale::IdDeliveryman)
                             .to(User::Table, User::Id),
                     )
                     .col(
@@ -71,8 +73,9 @@ pub enum Sale {
     Uuid,
     IdMercadoPago,
     TotalPrice,
-    WasCollected,
-    DeliveredBy,
+    Username,
+    IdUserClass,
+    IdDeliveryman,
     MoneyKept,
     RequiredRefunded,
     WasRefunded,
