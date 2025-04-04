@@ -9,7 +9,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false, column_type = "Binary(16)")]
     pub uuid: Uuid,
     pub id_mercado_pago: Option<u32>,
-    #[sea_orm(column_type = "Decimal(Some((10, 0)))")]
+    #[sea_orm(column_type = "Decimal(Some((10, 2)))")]
     pub total_price: Decimal,
     pub username: String,
     #[sea_orm(column_type = "Binary(16)")]

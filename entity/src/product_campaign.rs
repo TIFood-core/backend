@@ -8,10 +8,12 @@ use uuid::Uuid;
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false, column_type = "Binary(16)")]
     pub uuid: Uuid,
-    #[sea_orm(column_type = "Decimal(Some((10, 0)))")]
+    #[sea_orm(column_type = "Decimal(Some((10, 2)))")]
     pub price: Decimal,
     pub units: u32,
     pub extra_units: u32,
+    #[sea_orm(column_type = "Decimal(Some((10, 2)))")]
+    pub cost: Decimal,
     #[sea_orm(column_type = "Binary(16)")]
     pub id_product: Uuid,
     #[sea_orm(column_type = "Binary(16)")]

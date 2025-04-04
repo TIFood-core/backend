@@ -24,6 +24,7 @@ impl MigrationTrait for Migration {
                             .unsigned()
                             .not_null(),
                     )
+                    .col(ColumnDef::new(ProductCampaign::Cost).decimal().not_null())
                     .col(ColumnDef::new(ProductCampaign::IdProduct).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
@@ -67,6 +68,7 @@ pub enum ProductCampaign {
     Price,
     Units,
     ExtraUnits,
+    Cost,
     IdProduct,
     IdCampaign,
     CreatedAt,
