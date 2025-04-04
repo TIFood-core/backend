@@ -37,18 +37,7 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .default(false),
                     )
-                    .col(
-                        ColumnDef::new(Sale::RequiredRefunded)
-                            .boolean()
-                            .not_null()
-                            .default(false),
-                    )
-                    .col(
-                        ColumnDef::new(Sale::WasRefunded)
-                            .boolean()
-                            .not_null()
-                            .default(false),
-                    )
+                    .col(ColumnDef::new(Sale::RefundDate).date())
                     .col(
                         ColumnDef::new(Sale::CreatedAt)
                             .date()
@@ -77,7 +66,6 @@ pub enum Sale {
     IdUserClass,
     IdDeliveryman,
     MoneyKept,
-    RequiredRefunded,
-    WasRefunded,
+    RefundDate,
     CreatedAt,
 }

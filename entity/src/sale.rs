@@ -16,8 +16,7 @@ pub struct Model {
     pub id_user_class: Uuid,
     pub id_deliveryman: Option<u32>,
     pub money_kept: bool,
-    pub required_refunded: bool,
-    pub was_refunded: bool,
+    pub refund_date: Option<Date>,
     pub created_at: Date,
 }
 
