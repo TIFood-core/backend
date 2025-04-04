@@ -1,10 +1,4 @@
-use std::env;
-
-use argon2::{
-    Argon2, PasswordHasher,
-    password_hash::{SaltString, rand_core::OsRng},
-};
-use sea_orm_migration::{prelude::*, sea_orm::prelude::Date};
+use sea_orm_migration::prelude::*;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -52,44 +46,6 @@ impl MigrationTrait for Migration {
                     .to_owned(),
             )
             .await
-            .unwrap();
-
-        let db = manager.get_connection();
-
-        let env_admin_email = env::var("ADMIN_EMAIL").expect("ADMIN_EMAIL not found at .env file");
-        let env_admin_password =
-            env::var("ADMIN_PASSWORD").expect("ADMIN_PASSWORD not found at .env file");
-
-        let password_hash = Argon2::default()
-            .hash_password(
-                env_admin_password.as_bytes(),
-                &SaltString::generate(&mut OsRng),
-            )
-            .unwrap()
-            .to_string();
-
-        db.execute(
-            db.get_database_backend().build(
-                Query::insert()
-                    .into_table(User::Table)
-                    .columns([
-                        User::Email,
-                        User::Password,
-                        User::IsAdmin,
-                        User::EmailActivatorGenerationDate,
-                    ])
-                    .values_panic([
-                        env_admin_email.into(),
-                        password_hash.into(),
-                        true.into(),
-                        None::<Date>.into(),
-                    ]),
-            ),
-        )
-        .await
-        .unwrap();
-
-        Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
