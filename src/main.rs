@@ -7,6 +7,7 @@ mod connections;
 mod handlers;
 mod middlewares;
 mod routes;
+mod services;
 mod state;
 
 #[tokio::main]
